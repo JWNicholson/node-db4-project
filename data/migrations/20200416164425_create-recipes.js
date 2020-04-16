@@ -1,43 +1,43 @@
 
 exports.up = function(knex) {
-  return knex.schema.createTable('recipies', table => {
-      table.increments()
-      table.text('recipe_name', 128)
+  return knex.schema.createTable('recipes', tbl => {
+    tbl.increments();
+    tbl.text('recipe_name', 128)
         .unique()
         .notNullable();
   })
-  .createTable('steps', table => {
-      table.increments();
-      table.integer('step_number')
-        .unsigned()
-        .notNullable();
-      table.text('instructions')
-        .notNullable();
-      table.integer('recipe_id')
-        .unsigned()
-        .notNullable()
-        .references(id)
-        .inTable('recipes')
-        .onUpdate('CASCADE')
-        .onDelete('CASCADE');
+  .createTable('steps', tbl => {
+    tbl.increments();
+    tbl.integer('step_number')
+      .unsigned()
+      .notNullable();
+    tbl.text('instructions')
+      .notNullable();
+    tbl.integer('recipe_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('recipes')
+      .onUpdate('CASCADE')
+      .onDelete('CASCADE');
   })
-  .createTable('ingredients', table => {
-      table.increments();
-      table.text('ingredient_name',128)
+  .createTable('ingredients', tbl => {
+    tbl.increments();
+    tbl.text('ingredient_name', 128)
         .unique()
         .notNullable();
   })
-  .createTable('recipes_ingredients', table => {
-    table.increments();
-    table.string('ingredient_quantity', 128);
-    table.integer('recipe_id')
+  .createTable('recipes_ingredients', tbl => {
+    tbl.increments();
+    tbl.string('ingredient_quantity', 128);
+    tbl.integer('recipe_id')
       .unsigned()
       .notNullable()
       .references('id')
       .inTable('recipes')
       .onUpdate('CASCADE')
       .onDelete('CASCADE')
-    table.integer('ingredient_id')
+    tbl.integer('ingredient_id')
       .unsigned()
       .notNullable()
       .references('id')
@@ -48,7 +48,7 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-    return knex.schema
+  return knex.schema
     .dropTableIfExists('recipes_ingredients')
     .dropTableIfExists('ingredients')
     .dropTableIfExists('steps')
